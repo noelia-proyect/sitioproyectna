@@ -6,7 +6,7 @@ function App() {
   const [idActual, setIdActual]= useState('');
   const [docsBD, setDocsBD] =useState([]);
 
-
+ <h1>HOLA</h1>
 //////LECTURA A BASE DE DATOS/////////////////////////
   const fnRead = () => {
     console.log("Lectura a BD");
@@ -15,7 +15,7 @@ function App() {
     console.log("Eliminar un registro");
   }
   return (
-    <center><div style={{background:"#006f86", width:"350px", height:"500px", color:"white",paddingTop:"25px", fontSize:"27px"}}>
+    <center><div style={{alignitems: "center",background:"#123748", width:"350px", height:"500px", color:"white",padding:"15px", fontSize:"27px", marginTop: "100px", borderRadius:"4px"}}>
       <AppForm{...{idActual,setIdActual,fnRead}}/>
       
     </div></center>
