@@ -39,7 +39,7 @@ const AppForm = (props) => {
        return false;
     }
     if (objeto.genero ==="" ||/^\s+$/.test(objeto.genero)){
-      alert("Escriba su edad...")
+      alert("Escriba su genero...")
       return false;
    }
     return true;
@@ -47,7 +47,7 @@ const AppForm = (props) => {
   };
   
   return (
-    <div style={{background:"#123748",height:"489px",width:"350px",boxShadow: "7px 13px 37px #000", paddingTop:"7px"}}>
+    <div style={{background:"#157b8d",height:"489px",width:"350px",boxShadow: "7px 13px 37px #000", paddingTop:"7px"}}>
     <h3 style={{fontSize: "30px", marginBottom: "0px"}}>Registro</h3>
     <form onSubmit={controlSubmit} style={{ padding:"40px", fontFamily: "calibri"}}>
       <input style={{width:"100%", background:"#123748", padding:"10px", borderRadius:"4px", marginBottom:"20px", border: "2px solid #1f53c5", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name='nombre' placeholder='Ingrese su nombre' onChange={controlarEstadoCambio} value={objeto.nombre}/> <br />
