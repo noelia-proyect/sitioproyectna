@@ -50,14 +50,15 @@ const AppForm = (props) => {
     <div style={{background:"#157b8d",height:"489px",width:"350px",boxShadow: "7px 13px 37px #000", paddingTop:"7px"}}>
     <h3 style={{fontSize: "30px", marginBottom: "0px"}}>Registro</h3>
     <form onSubmit={controlSubmit} style={{ padding:"40px", fontFamily: "calibri"}}>
-      <input style={{width:"100%", background:"#123748", padding:"10px", borderRadius:"4px", marginBottom:"20px", border: "2px solid #1f53c5", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name='nombre' placeholder='Ingrese su nombre' onChange={controlarEstadoCambio} value={objeto.nombre}/> <br />
-      <input style={{width:"100%", background:"#123748", padding:"10px", borderRadius:"4px", marginBottom:"20px", border: "2px solid #1f53c5", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name='edad' placeholder='Ingrese su edad' onChange={controlarEstadoCambio} value={objeto.edad}/> <br />
-      <select style={{width:"108%", background:"#123748", padding:"10px", borderRadius:"4px", marginBottom:"20px", border: "2px solid #1f53c5", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name="genero" onChange={controlarEstadoCambio}value={objeto.genero} >
+      <input style={{width:"100%", background:"#00261f", padding:"10px", borderRadius:"6px", marginBottom:"20px", border: "2px solid #FFFFFF", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name='nombre' placeholder='Ingrese su nombre' onChange={controlarEstadoCambio} value={objeto.nombre}/> <br />
+      <input style={{width:"100%", background:"#00261f", padding:"10px", borderRadius:"6px", marginBottom:"20px", border: "2px solid #FFFFFF", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name='edad' placeholder='Ingrese su edad' onChange={controlarEstadoCambio} value={objeto.edad}/> <br />
+      <select style={{width:"108%", background:"#00261f", padding:"10px", borderRadius:"6px", marginBottom:"20px", border: "2px solid #FFFFFF", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name="genero" onChange={controlarEstadoCambio}value={objeto.genero} >
         <option >Seleccione su genero</option>
         <option value={"femenino"}>Femenino</option>
         <option value={"masculino"}>Masculino</option>
       </select>
-      <button style={{width:"100%", background:"#1f53c5", border: "none",padding:"12px", color:"white", margin:"16px 15px", fontSize: "18px", fontFamily: "calibri"}}>
+
+      <button style={{width:"100%", background:"#FFFFFF", border: "none",padding:"12px", color:"#00261f", margin:"16px 15px", fontSize: "18px", fontFamily: "calibri"}}>
       {props.idActual === ""? "Guardar" : "Actualizar"}
       </button>
     </form>

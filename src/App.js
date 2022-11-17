@@ -15,7 +15,7 @@ function App() {
     console.log("Eliminar un registro");
   }
   return (
-    <center><div style={{alignitems: "center",background:"#123968", width:"350px", height:"500px", color:"white",padding:"15px", fontSize:"27px", marginTop: "100px", borderRadius:"4px"}}>
+    <center><div style={{alignitems: "center",background:"#00261f", width:"350px", height:"500px", color:"white",padding:"15px", fontSize:"27px", marginTop: "100px", borderRadius:"4px"}}>
       <AppForm{...{idActual,setIdActual,fnRead}}/>
       
     </div></center>
