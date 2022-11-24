@@ -1,71 +1,102 @@
-import {collection,addDoc} from "firebase/firestore";
-import React from 'react'
-import { useState } from "react";
-import firebase, { db } from './firebase' ;
-import Select from 'react-select'
-const AppForm = (props) => {
-    ////////////////////actualizar y eliminar///////////////////////
-  const camposRegistro = {nombre:'',edad:"",genero:""}; ////estructura de campo de resgitro/////
-  const [objeto,setObjeto] = useState(camposRegistro);
-   
-  const controlarEstadoCambio= async(e) => {///////////////maneja cambios en input//////////////////
-     const {name,value} = e.target;
-     setObjeto({...objeto,[name]:value});
-     console.log(objeto);////lectura al objeto////
-  };
+import {collection, doc, getDoc, addDoc, updateDoc} from "firebase/firestore";
+import React, {useEffect, useState} from 'react';
+import { db } from './firebase';
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
-  const controlSubmit= async (e) => {///maneja submit (envio)////
-     e.preventDefault(); ////evita por defecto
-     if (props.idActual === ""){
-        if(validarForm()){
-            addDoc(collection(db, 'persona'),objeto);
-            console.log("Se guardo en bd");
+const AppFrom = (props) => {
 
-        }else{
-          console.log("No se guardo");
-              }
-    }else{
-      //console.log("No se guardo");
-    }
-    setObjeto(camposRegistro);
-  };
-  const validarForm= (e) => {
-    if(objeto.nombre==="" || /^\s+$/.test(objeto.nombre)){
-       alert("Escriba nombre...");
-       return false;
-      }
-    if (objeto.edad ==="" ||/^\s+$/.test(objeto.edad)){
-       alert("Escriba su edad...")
-       return false;
-    }
-    if (objeto.genero ==="" ||/^\s+$/.test(objeto.genero)){
-      alert("Escriba su genero...")
-      return false;
-   }
-    return true;
+    const camposRegistro ={nombre:"", edad:"", genero:""}
+    const [objeto, setObjeto] = useState(camposRegistro);
+
+    const controlarEstadoCambio = (e) => {  
+        const {name, value} = e.target;
+        setObjeto({...objeto,[name]:value});   
+    };
     
-  };
-  
-  return (
-    <div style={{background:"#157b8d",height:"489px",width:"350px",boxShadow: "7px 13px 37px #000", paddingTop:"7px"}}>
-    <h3 style={{fontSize: "30px", marginBottom: "0px"}}>Registro</h3>
-    <form onSubmit={controlSubmit} style={{ padding:"40px", fontFamily: "calibri"}}>
-      <input style={{width:"100%", background:"#00261f", padding:"10px", borderRadius:"6px", marginBottom:"20px", border: "2px solid #FFFFFF", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name='nombre' placeholder='Ingrese su nombre' onChange={controlarEstadoCambio} value={objeto.nombre}/> <br />
-      <input style={{width:"100%", background:"#00261f", padding:"10px", borderRadius:"6px", marginBottom:"20px", border: "2px solid #FFFFFF", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name='edad' placeholder='Ingrese su edad' onChange={controlarEstadoCambio} value={objeto.edad}/> <br />
-      <select style={{width:"108%", background:"#00261f", padding:"10px", borderRadius:"6px", marginBottom:"20px", border: "2px solid #FFFFFF", fontFamily: "calibri", fontSize:"18px", color:"white"}} type="text" name="genero" onChange={controlarEstadoCambio}value={objeto.genero} >
-        <option >Seleccione su genero</option>
-        <option value={"femenino"}>Femenino</option>
-        <option value={"masculino"}>Masculino</option>
-      </select>
+    const controlSubmit = async (e) => {
+        try{
+            e.preventDefault();
 
-      <button style={{width:"100%", background:"#FFFFFF", border: "none",padding:"12px", color:"#00261f", margin:"16px 15px", fontSize: "18px", fontFamily: "calibri"}}>
-      {props.idActual === ""? "Guardar" : "Actualizar"}
-      </button>
-    </form>
-    </div>
-  )
-}
+            if(props.idActual === ""){
+                if(validarForm()){
+                    addDoc(collection(db, 'persona'),objeto);
+                    toast("Se GUARDO con exito",{
+                        type:'error',
+                        autoClose: 2000  
+                })}
+            }else{
+                await updateDoc(doc(collection(db, "persona"), props.idActual), objeto);
+                toast("Se ACTUALIZO con exito...",{
+                    type:'info',
+                    autoClose:2000
+                })
+                props.setIdActual('');
+            }
+            setObjeto(camposRegistro);
+        }catch(error){
+            console.log("Error en crear o update..",error);
+        }     
+    };
+    const validarForm = () => {
+        if(objeto.nombre==="" || /^\s+$/.test(objeto.nombre)){
+            alert("Escriba nombres...");
+            return false;
+        }
+        return true;
+    };
 
-export default AppForm
+    useEffect( () => {
+        if(props.idActual ===""){
+            setObjeto({...camposRegistro});
+        }else{
+            obtenerDatosPorId(props.idActual);
+        }
+    }, [props.idActual]);
 
+    const obtenerDatosPorId =async(xId)=>{
+        const objPorId = doc(db, "persona",xId);
+        const docPorId = await getDoc(objPorId);
+        if (docPorId.exists()){
+            setObjeto(docPorId.data());
+        }else{
+            console.log("No hay doc... ");
+        }  
+    }
+    
 
+    return(
+        <div>
+        <form className="card card-body" onSubmit={controlSubmit}>
+            <button className="btn btn-primary btn-block">
+                Formulario (AppForm.js)
+            </button>
+            <div className="form-group input-group">
+                <div className="input-group-text bd-light">
+                    <i className="material-icons">group_add</i>
+                </div>
+                <input type="text" className="form-control" name="nombre" placeholder="Nombre..."
+                    onChange={controlarEstadoCambio} value={objeto.nombre}/><br/>
+            </div>
+            <div className="form-group input-group clearfic">
+                <div className="input-group-text bd-light">
+                    <i className="material-icons">star_half</i>
+                </div>
+                <input type="text" className="form-control"name="edad" placeholder="Edad..."
+                    onChange={controlarEstadoCambio} value={objeto.edad}/><br/>
+            </div>
+            <div className="form-group input-group">
+                <div className="input-group-text bd-light">
+                    <i className="material-icons">insert_link</i>
+                </div>
+                <input type="text" className="form-control" name="genero" placeholder="Genero..."
+                    onChange={controlarEstadoCambio} value={objeto.genero}/><br/>
+            </div>
+            <button className="btn btn-primary btn-block">
+                {props.idActual === ""? "Guardar" : "Actualizar"}
+            </button>
+        </form>
+        </div>
+    )
+};
+export default AppFrom;
